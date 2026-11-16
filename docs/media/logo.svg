@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="660" height="130" viewBox="0 0 660 130" role="img" aria-labelledby="title">
+  <title id="title">ur3-robotiq-mujoco-isaacsim</title>
+  <!-- Mark: base, three links with round joints, two-finger parallel gripper -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M24 112 H80" stroke="#64748B" stroke-width="8"/>
+    <path d="M52 104 L52 66 L100 38 L124 62" stroke="#94A3B8" stroke-width="12"/>
+    <path d="M124 62 L124 72" stroke="#94A3B8" stroke-width="8"/>
+    <path d="M110 76 H138" stroke="#3B82B6" stroke-width="7"/>
+    <path d="M112 78 V96 M136 78 V96" stroke="#3B82B6" stroke-width="6"/>
+  </g>
+  <rect x="38" y="96" width="28" height="14" rx="4" fill="#64748B"/>
+  <circle cx="52" cy="66" r="9" fill="#3B82B6"/>
+  <circle cx="100" cy="38" r="9" fill="#3B82B6"/>
+  <circle cx="124" cy="62" r="7" fill="#3B82B6"/>
+  <text x="170" y="74" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="32" font-weight="700" fill="#7C8BA1">ur3-robotiq-mujoco-isaacsim</text>
+</svg>

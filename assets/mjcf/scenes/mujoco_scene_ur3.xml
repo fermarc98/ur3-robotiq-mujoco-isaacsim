@@ -1,0 +1,63 @@
+<!-- MuJoCo counterpart of usd/scenes/isaacsim_scene_ur3.usd (room + table + UR3/2F-85 robot + bin + cube).
+     Poses are copied from the USD scene (same world frame, Z up, meters).
+     Each part lives in ../robots, ../objects or ../environments and is pulled in with <model> + <attach>,
+     so mesh/texture paths stay relative to each part's own file.
+     Options are not inherited from attached models, so the robot's options are repeated here:
+     implicitfast (stiff arm drives) + elliptic cones / impratio 10 (Menagerie 2F-85 grasping). -->
+<mujoco model="ur3_scene">
+  <compiler angle="radian"/>
+  <option timestep="0.002" gravity="0 0 -9.81" integrator="implicitfast" cone="elliptic" impratio="10"/>
+
+  <statistic center="-0.6 0.5 0.1" extent="1.2"/>
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>
+    <rgba haze="0.15 0.25 0.35 1"/>
+    <global azimuth="-120" elevation="-25" offwidth="1280" offheight="720"/>
+  </visual>
+
+  <asset>
+    <texture name="skybox" type="skybox" builtin="gradient" rgb1="0.95 0.95 0.95" rgb2="0.8 0.82 0.85" width="512" height="3072"/>
+    <texture name="groundplane" type="2d" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3"
+             markrgb="0.8 0.8 0.8" width="300" height="300"/>
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.2"/>
+
+    <model name="simple_room" file="../environments/Simple_Room/simple_room.xml"/>
+    <model name="ur3_robotiq2f_85" file="../robots/ur3_robotiq2f_85/ur3_robotiq2f_85.xml"/>
+    <model name="welding_table" file="../objects/welding_table/welding_table.xml"/>
+    <model name="small_KLT" file="../objects/containers/KLT_Bin/small_KLT.xml"/>
+    <model name="nvidia_cube" file="../objects/manipulation/Blocks/nvidia_cube.xml"/>
+  </asset>
+
+  <worldbody>
+    <!-- /World/simple_room: visual room + its invisible collision floor (at z = -0.83, the table's feet).
+         Lowered 0.0605 m vs. the original USD so the table legs stand on the floor (same in the Isaac scene).
+         For physics-only runs you can comment this out and uncomment the plain floor below. -->
+    <frame pos="-0.657189 -2.392856 -0.0605">
+      <attach model="simple_room" body="simple_room" prefix="room/"/>
+    </frame>
+    <!-- <light pos="-0.6 0.5 2.5" dir="0 0 -1" diffuse="0.7 0.7 0.7"/>
+    <geom name="floor" type="plane" pos="0 0 -0.83" size="0 0 0.05" material="groundplane"/> -->
+
+    <!-- /World/welding_table: translate (0,0,0), rotate +90 deg about Z, fixed to world -->
+    <frame pos="0 0 0" quat="0.70710678 0 0 0.70710678">
+      <attach model="welding_table" body="welding_table" prefix="table/"/>
+    </frame>
+
+    <!-- /World/ur3_robotiq2f_85: translate (-0.2, 0.925, 0), rotate 180 deg about Z, base fixed on the table.
+         Starts at qpos = 0 (all joints 0, gripper open), as in the Isaac scene.
+         Names get the "robot/" prefix, e.g. actuators robot/shoulder_pan ... robot/gripper/fingers_actuator -->
+    <frame pos="-0.2 0.925 0" quat="0 0 0 1">
+      <attach model="ur3_robotiq2f_85" body="base_link" prefix="robot/"/>
+    </frame>
+
+    <!-- /World/small_KLT -->
+    <frame pos="-0.448919 0.432887 0.076673">
+      <attach model="small_KLT" body="small_KLT" prefix="klt/"/>
+    </frame>
+
+    <!-- /World/nvidia_cube -->
+    <frame pos="-0.762636 0.482224 0.043487">
+      <attach model="nvidia_cube" body="nvidia_cube" prefix="cube/"/>
+    </frame>
+  </worldbody>
+</mujoco>
