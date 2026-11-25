@@ -11,6 +11,7 @@ scripts/convert_ur3_usd_to_mjcf.py
 scripts/assemble_ur3_robotiq2f85_mjcf.py
 
 # MuJoCo / Isaac Sim runtime output
+camera_output/
 MUJOCO_LOG.TXT
 *.log
 kit/logs/

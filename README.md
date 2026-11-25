@@ -52,6 +52,7 @@ pip install mujoco==3.4.0 numpy pillow   # viewer and screenshots
 | `scripts/launch_isaacsim.py` | `~/isaacsim/python.sh` |
 | `scripts/launch_mujoco.py` | `mujoco` conda env (or `~/isaacsim/python.sh`) |
 | `scripts/render_screenshots.py` | `--sim isaacsim`: `~/isaacsim/python.sh`; `--sim mujoco`: `mujoco` conda env |
+| `scripts/render_camera.py` | `--sim isaacsim`: `~/isaacsim/python.sh`; `--sim mujoco`: `mujoco` conda env |
 
 ## Quick start
 
@@ -70,6 +71,24 @@ scripts/launch.sh mujoco --model assets/mjcf/robots/ur3_robotiq2f_85/ur3_robotiq
 MuJoCo actuators: `robot/shoulder_pan`, `robot/shoulder_lift`, `robot/elbow`, `robot/wrist_1`, `robot/wrist_2`, `robot/wrist_3` (joint position targets, rad) and `robot/gripper/fingers_actuator` (0 = open, 255 = closed).
 
 The screenshots above are made with `scripts/render_screenshots.py --sim {isaacsim,mujoco}`.
+
+## Table camera
+
+The welding table carries an Intel RealSense D435-style camera on a tilt mount above the workspace. Both scenes define it with the same pose and intrinsics, a 1280 × 720 colour stream with a 69.4° × 42.5° field of view (fx = fy = 925.7 px):
+
+| | Camera | Defined in |
+|---|---|---|
+| Isaac Sim | `/World/welding_table/camera_link/table_camera` | `assets/usd/objects/welding_table/configuration/welding_table_sensor.usd` |
+| MuJoCo | `table/table_camera` | `assets/mjcf/objects/welding_table/welding_table.xml` |
+
+The mount joint `camera_joint` is set to −35° (tilted down) in both. In Isaac Sim the scene sets the drive target and the starting pose of `camera_link`; in MuJoCo `camera_link` is a static body at that angle.
+
+```bash
+~/isaacsim/python.sh scripts/render_camera.py --sim isaacsim
+~/anaconda3/envs/mujoco/bin/python scripts/render_camera.py --sim mujoco
+```
+
+Each run writes `camera_output/<sim>_rgb.png` and `camera_output/<sim>_depth.png`. The depth image is a 16-bit PNG of the distance to the image plane in millimetres. In the GUIs, choose `table_camera` from the Isaac Sim viewport camera menu, or `table/table_camera` under Rendering → Camera in the MuJoCo viewer.
 
 ## Repository structure
 
