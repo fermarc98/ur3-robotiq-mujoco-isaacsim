@@ -92,7 +92,7 @@ docs/media/                           # logo and screenshots
 ## Known differences between the simulators
 
 - **Gripper**: MuJoCo uses the MuJoCo Menagerie `robotiq_2f85_v4` model with its own tendon actuator (0–255); Isaac Sim uses its own 2F-85 USD with a joint drive. The mount pose is the same, but gripper timing and forces differ.
-- **Arm torque limits**: the MuJoCo `forcerange` copies the USD drive `maxForce` (3360 / 3360 / 1680 / 720 / 720 / 720 N·m), well above the real UR3 limits.
+- **Arm drives**: the MuJoCo arm is tuned like the real UR3 rather than copying the USD drives (kp 6000–12000 N·m/rad, `maxForce` up to 3360 N·m). It has the real torque limits (56 / 56 / 28 / 12 / 12 / 12 N·m). Joint damping keeps speeds near the real limits (about 3 rad/s for the base, shoulder and elbow, 6 rad/s for the wrists). The PD gains reach the target without overshoot, and gravity compensation goes through the actuators. The values and the USD originals are in `assets/mjcf/robots/ur3/ur3.xml`.
 - **Room**: the low table prop (`table_low`) is removed from the MuJoCo room only.
 - **Not in the USD**: MuJoCo adds a 0.01 kg·m² armature on the wrist joints (stable at the 2 ms timestep), and the UR3 collision shapes come from a CoACD decomposition instead of PhysX `convexDecomposition`.
 
